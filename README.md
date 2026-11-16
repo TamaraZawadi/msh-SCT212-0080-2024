@@ -37,7 +37,7 @@ make clean
 The shell will implement the following features:
 
 1. Command prompt and user input using getline() and free() : Completed
-2. Command parsing using strtok() and an array of pointers  : Not attempted
+2. Command parsing using strtok() and an array of pointers  : Completed
 3. External command execution using fork(), execvp() and waitpid() : Not attempted
 4. Built-in commands (`cd[dir]`, `help`, `exit.cd`)using chdir and getenv : Not attempted
 5. Exit status handling using WIFEXITED(), WEXITSTATUS() and WIFSIGNALED() : Not attempted
