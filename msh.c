@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 
 int main(void)
@@ -12,6 +13,7 @@ int main(void)
 	char *argv[100];
 	char *token;
 	int i;	
+	pid_t pid;
 
 	while (1)
 	{
@@ -32,14 +34,37 @@ int main(void)
 	    token = strtok(NULL, " \t\n");
 	}
 
-		argv[i] = NULL;	
-		for (int j = 0; argv[j] != NULL; j++)
-		{
-		    printf("argv[%d]: %s\n", j, argv[j]);
-		}
+	argv[i] = NULL;	
+
+	if (argv[0] == NULL)
+	{
+ 	   continue;
+	}
+	pid = fork();
+
+	if (pid == -1)
+	{
+	    perror("fork");
+	}
+
+	else if (pid == 0)
+	{
+	    execvp(argv[0], argv);
+
+	    perror("execvp");
+	    exit(EXIT_FAILURE);
+	}
+	else
+	{
+	    if (waitpid(pid, NULL, 0) == -1)
+	    {
+	        perror("waitpid");
+	    }
+	}
 	}
 
 	free(line);
 
     return 0;
 }
+
