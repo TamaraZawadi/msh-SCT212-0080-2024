@@ -40,6 +40,48 @@ int main(void)
 	{
  	   continue;
 	}
+
+	if (strcmp(argv[0], "cd") == 0)
+	{
+	    char *directory;
+
+	    if (argv[1] == NULL)
+	    {
+        	directory = getenv("HOME");
+	    }
+	    else
+	    {	
+        	directory = argv[1];
+	    }
+
+	    if (directory == NULL)
+	    {
+        	fprintf(stderr, "cd: HOME not set\n");
+	    }
+	    else if (chdir(directory) == -1)
+	    {
+	        perror("cd");
+	    }
+	    continue;
+		}
+		
+	if (strcmp(argv[0], "help") == 0)
+	{
+	    printf("Mini Shell Help\n");
+	    printf("Built-in commands:\n");
+	    printf("cd [dir] - Change the current directory\n");
+	    printf("help - Display this help message\n");
+	    printf("exit - Exit the shell\n");
+	    printf("External commands can also be executed.\n");
+
+	    continue;
+	}
+
+	if (strcmp(argv[0], "exit") == 0)
+	{
+	    free(line);
+	    exit(EXIT_SUCCESS);
+	}
 	pid = fork();
 
 	if (pid == -1)

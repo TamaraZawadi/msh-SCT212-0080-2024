@@ -39,7 +39,15 @@ The shell will implement the following features:
 1. Command prompt and user input using getline() and free() : Completed
 2. Command parsing using strtok() and an array of pointers  : Completed
 3. External command execution using fork(), execvp() and waitpid() : Completed
-4. Built-in commands (`cd[dir]`, `help`, `exit.cd`)using chdir and getenv : Not attempted
+4. Built-in commands (`cd[dir]`, `help`, `exit.cd`)using chdir and getenv : Completed
+
+###Why cd cannot be an external program
+
+cd must be a built-in command because if implemented as an external executable, it would call "chdir()" which
+affects only the process that calls it.
+If cd were executed as an external command in a child process created by fork(), only the child's working directory
+ would change but the parent shell would remain in its original directory.
+
 5. Exit status handling using WIFEXITED(), WEXITSTATUS() and WIFSIGNALED() : Not attempted
 6. Background process execution using & and WNOHANG   : Not attempted
 7. Output redirection using open(), dup2() and close() : Not attempted
