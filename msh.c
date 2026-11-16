@@ -153,7 +153,7 @@ int main(void)
     {
         perror("dup2");
         close(file_fd);
-        exit(EXIT_FAILURE);
+        exit(127);
     }
 
     close(file_fd);
@@ -162,7 +162,7 @@ int main(void)
 	    execvp(argv[0], argv);
 
 	    perror("execvp");
-	    exit(EXIT_FAILURE);
+	    exit(127);
 	}
 
 	else
