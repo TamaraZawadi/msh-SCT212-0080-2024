@@ -21,6 +21,7 @@ int main(void)
 	int background;
 	char *output_file;
 	int file_fd;
+	int invalid_redirection;
 	
 	signal(SIGINT, SIG_IGN);
 
@@ -51,6 +52,7 @@ int main(void)
 	
 	background = 0;
 	output_file = NULL;
+	invalid_redirection = 0;
 
 	for (int j = 0; argv[j] != NULL; j++)
 	{
@@ -59,7 +61,8 @@ int main(void)
 	        if (argv[j + 1] == NULL)
         	{
 	            fprintf(stderr, "msh: missing output file\n");
-	            continue;
+	            invalid_redirection = 1;
+			break;
 	        }
 
         	output_file = argv[j + 1];
@@ -72,6 +75,11 @@ int main(void)
 	{
 	    background = 1;
 	    argv[i - 1] = NULL;
+	}
+
+	if (invalid_redirection == 1)
+	{
+	    continue;
 	}
 
 	if (argv[0] == NULL)
