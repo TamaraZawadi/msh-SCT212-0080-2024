@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <fcntl.h>
 
 
 int main(void)
@@ -14,9 +15,13 @@ int main(void)
 	char *argv[100];
 	char *token;
 	int i;	
+	
 	pid_t pid;
 	int status =0;
 	int background;
+	char *output_file;
+	int file_fd;
+	
 	signal(SIGINT, SIG_IGN);
 
 	while (1)
@@ -45,6 +50,23 @@ int main(void)
 	argv[i] = NULL;	
 	
 	background = 0;
+	output_file = NULL;
+
+	for (int j = 0; argv[j] != NULL; j++)
+	{
+	    if (strcmp(argv[j], ">") == 0)
+	    {
+	        if (argv[j + 1] == NULL)
+        	{
+	            fprintf(stderr, "msh: missing output file\n");
+	            continue;
+	        }
+
+        	output_file = argv[j + 1];
+	        argv[j] = NULL;
+        	break;
+    	}
+	}
 
 	if (i > 0 && strcmp(argv[i - 1], "&") == 0)
 	{
@@ -108,6 +130,26 @@ int main(void)
 	else if (pid == 0)
 	{
 	signal(SIGINT, SIG_DFL);
+
+	if (output_file != NULL)
+{
+    file_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+    if (file_fd == -1)
+    {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
+
+    if (dup2(file_fd, STDOUT_FILENO) == -1)
+    {
+        perror("dup2");
+        close(file_fd);
+        exit(EXIT_FAILURE);
+    }
+
+    close(file_fd);
+}
 
 	    execvp(argv[0], argv);
 
