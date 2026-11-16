@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 
 int main(void)
@@ -14,10 +15,12 @@ int main(void)
 	char *token;
 	int i;	
 	pid_t pid;
+	int status =0;
+	signal(SIGINT, SIG_IGN);
 
 	while (1)
 	{
-	  printf("msh$ ");
+	  printf("msh[%d]> ", status);
 	  fflush(stdout);
 
 	if (getline(&line,&len,stdin) ==-1)
@@ -91,6 +94,8 @@ int main(void)
 
 	else if (pid == 0)
 	{
+	signal(SIGINT, SIG_DFL);
+
 	    execvp(argv[0], argv);
 
 	    perror("execvp");
@@ -98,10 +103,18 @@ int main(void)
 	}
 	else
 	{
-	    if (waitpid(pid, NULL, 0) == -1)
+	    if (waitpid(pid, &status, 0) == -1)
 	    {
 	        perror("waitpid");
 	    }
+	 else if (WIFEXITED(status))
+    	{
+        	status = WEXITSTATUS(status);
+    	}
+	    else if (WIFSIGNALED(status))
+    	{
+        	status = 128 + WTERMSIG(status);
+    	}
 	}
 	}
 
