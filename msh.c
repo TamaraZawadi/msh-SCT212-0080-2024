@@ -16,10 +16,15 @@ int main(void)
 	int i;	
 	pid_t pid;
 	int status =0;
+	int background;
 	signal(SIGINT, SIG_IGN);
 
 	while (1)
 	{
+	while (waitpid(-1, NULL, WNOHANG) > 0)
+	{
+	    /* Reap completed background processes */
+	}
 	  printf("msh[%d]> ", status);
 	  fflush(stdout);
 
@@ -38,12 +43,20 @@ int main(void)
 	}
 
 	argv[i] = NULL;	
+	
+	background = 0;
+
+	if (i > 0 && strcmp(argv[i - 1], "&") == 0)
+	{
+	    background = 1;
+	    argv[i - 1] = NULL;
+	}
 
 	if (argv[0] == NULL)
 	{
  	   continue;
 	}
-
+	
 	if (strcmp(argv[0], "cd") == 0)
 	{
 	    char *directory;
@@ -101,22 +114,30 @@ int main(void)
 	    perror("execvp");
 	    exit(EXIT_FAILURE);
 	}
+
 	else
 	{
-	    if (waitpid(pid, &status, 0) == -1)
+	    if (background == 1)
 	    {
-	        perror("waitpid");
+        	printf("[%d] %d\n", 1, pid);
 	    }
-	 else if (WIFEXITED(status))
-    	{
-        	status = WEXITSTATUS(status);
-    	}
-	    else if (WIFSIGNALED(status))
-    	{
-        	status = 128 + WTERMSIG(status);
-    	}
+	    else
+	    {
+        	if (waitpid(pid, &status, 0) == -1)
+	        {
+        	    perror("waitpid");
+	        }
+        	else if (WIFEXITED(status))
+	        {
+        	    status = WEXITSTATUS(status);
+	        }
+        	else if (WIFSIGNALED(status))
+	        {
+        	    status = 128 + WTERMSIG(status);
+	        }
+	    }	
 	}
-	}
+}
 
 	free(line);
 

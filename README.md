@@ -49,7 +49,7 @@ If cd were executed as an external command in a child process created by fork(),
  would change but the parent shell would remain in its original directory.
 
 5. Exit status handling using WIFEXITED(), WEXITSTATUS() and WIFSIGNALED() : Completed
-6. Background process execution using & and WNOHANG   : Not attempted
+6. Background process execution using & and WNOHANG   : Completed
 7. Output redirection using open(), dup2() and close() : Not attempted
 8. Signal handling using SIGINT : Not attempted
 
