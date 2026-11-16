@@ -36,7 +36,7 @@ make clean
 ## Features Implemented
 The shell will implement the following features:
 
-1. Command prompt and user input using getline() and free() : Not attempted
+1. Command prompt and user input using getline() and free() : Completed
 2. Command parsing using strtok() and an array of pointers  : Not attempted
 3. External command execution using fork(), execvp() and waitpid() : Not attempted
 4. Built-in commands (`cd[dir]`, `help`, `exit.cd`)using chdir and getenv : Not attempted
