@@ -37,9 +37,9 @@ gcc -Wall -Wextra -o msh msh.c
 The shell will implement the following features:
 
 1. Command prompt and user input using getline() and free() : **Completed**
-2. Command parsing using strtok() and an array of pointers  : ** Completed**
+2. Command parsing using strtok() and an array of pointers  : **Completed**
 3. External command execution using fork(), execvp() and waitpid() : **Completed**
-4. Built-in commands (`cd[dir]`, `help`, `exit.cd`)using chdir and getenv : # ICS 2305 - Systems Programming Assignment Question 1
+4. Built-in commands (`cd[dir]`, `help`, `exit.cd`)using chdir and getenv : **Completed**
 
 
 ### Why cd cannot be an external program
