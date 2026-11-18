@@ -20,15 +20,16 @@ The shell provides an onteractive command-line interface that shows clearly how 
 - GNU Make (if using the Makefile)
 - Git.
 
-###Clone the Repository
+### Clone the Repository
 git clone https://github.com/TamaraZawadi/msh-SCT212-0080-2024.git
-###Change the directory to your cloned repo
+
+### Change the directory to your cloned repo
 cd msh-SCT212-0080-2024
 
-###Compile using GCC
+### Compile using GCC
 gcc -Wall -Wextra -o msh msh.c
 
-###Run the Shell
+### Run the Shell
 ./msh
 
 
