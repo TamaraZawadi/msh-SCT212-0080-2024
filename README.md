@@ -14,7 +14,7 @@ The shell provides an onteractive command-line interface that shows clearly how 
 
 ## How to Build and Run
 
-###Prerequisites
+### Prerequisites
 - Linux operating system.
 - GCC compiler.
 - GNU Make (if using the Makefile)
